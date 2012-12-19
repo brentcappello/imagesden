@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+    Index page
+
+    <form id="search_form" method="post">
+        {% csrf_token %}
+        <ul>
+            <li>{{ form.search }}</li>
+        </ul>
+        <button class="btn" type="submit">Submit</button>
+    </form>
+
+
+{% endblock %}
