@@ -8,6 +8,7 @@ class DjangoWriterPipeline(object):
     def process_item(self, item, spider):
         try:
             item['news_website'] = spider.ref_object
+            item['search_term'] = 'blue' #I added this its how we see what was searched per item
             
             checker_rt = SchedulerRuntime(runtime_type='C')
             checker_rt.save()

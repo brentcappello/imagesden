@@ -21,6 +21,7 @@ class Article(models.Model):
     description = models.TextField(blank=True)
     url = models.URLField()
     thumbnail = models.CharField(max_length=200)
+    search_term = models.CharField(max_length=200)
     checker_runtime = models.ForeignKey(SchedulerRuntime, blank=True, null=True, on_delete=models.SET_NULL)
 
 
