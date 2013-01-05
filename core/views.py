@@ -12,11 +12,10 @@ def search_it(request):
         if form.is_valid(): # All validation rules pass
             form.process()
             search = form.cleaned_data['search']
-
-            request.session['my_search'] = search
-            searched = request.session['my_search']
+#            request.session['my_search'] = search
+#            searched = request.session['my_search']
             t = TaskUtils()
-            t.run_spiders(NewsWebsite, 'scraper', 'scraper_runtime', 'article_spider', searched)
+            t.run_spiders(NewsWebsite, 'scraper', 'scraper_runtime', 'article_spider', search)
 
             return HttpResponseRedirect(search) # Redirect after POST
     else:
