@@ -32,9 +32,9 @@ ITEM_PIPELINES = [
 #before this was just ../thumbnails
 IMAGES_STORE = os.path.join(PROJECT_ROOT, '../../imagesden/media')
 
-IMAGES_THUMBS = {
-    'small': (170, 170),
-}
+#IMAGES_THUMBS = {
+#    'small': (170, 170),
+#}
 
 DSCRAPER_LOG_ENABLED = True
 DSCRAPER_LOG_LEVEL = 'INFO'
