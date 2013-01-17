@@ -3,6 +3,7 @@ from django.db.models.signals import pre_delete
 from django.dispatch import receiver
 from scrapy.contrib.djangoitem import DjangoItem
 from dynamic_scraper.models import Scraper, SchedulerRuntime
+from django.template.defaultfilters import slugify
 
 
 class NewsWebsite(models.Model):
@@ -15,6 +16,18 @@ class NewsWebsite(models.Model):
         return self.name
 
 
+class Den(models.Model):
+    title = models.CharField(max_length=200)
+    slug = models.SlugField(unique=True)
+    description = models.TextField(blank=True)
+
+    def save(self):
+        self.slug = slugify(self.title)
+        super(Den, self).save()
+
+    def __unicode__(self):
+        return self.title
+
 class Article(models.Model):
     title = models.CharField(max_length=200)
     news_website = models.ForeignKey(NewsWebsite)
@@ -23,7 +36,7 @@ class Article(models.Model):
     thumbnail = models.CharField(max_length=200)
     search_term = models.CharField(max_length=200)
     checker_runtime = models.ForeignKey(SchedulerRuntime, blank=True, null=True, on_delete=models.SET_NULL)
-
+    dens = models.ManyToManyField(Den)
 
     def __unicode__(self):
         return self.title

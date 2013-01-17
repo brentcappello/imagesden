@@ -1,0 +1,19 @@
+{% extends 'base_public.html' %}
+
+{% load thumbnail %}
+{% block title %}{{ den.title }}{% endblock %}
+{% block content_title %}{{ den.title|truncatechars:50 }}{% endblock %}
+{% block content %}
+    {% for item in image_list %}
+        <div class="preview_tile_pub">
+            <a href=""><img src="{% thumbnail item.thumbnail 260x260 crop %}" alt=""/></a>
+            <div class="preview_title_pub"><h2>{{ item.title|truncatechars:38 }}</h2></div>
+            <div class="preview_excerp_pub">
+                    <p>{{ item.description|truncatechars:150 }}</p>
+{#                <span class="preview_read_pub"><a href="{{ item.get_absolute_url_public }}">READ</a></span>#}
+            </div>
+        </div>
+    {% endfor %}
+    <br>
+
+{% endblock %}

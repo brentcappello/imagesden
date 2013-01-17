@@ -130,6 +130,7 @@ INSTALLED_APPS = (
     'south',
     'debug_toolbar',
     'dynamic_scraper',
+    'easy_thumbnails',
 
 )
 
@@ -164,6 +165,6 @@ LOGGING = {
     }
 }
 
-#DEBUG_TOOLBAR_CONFIG = {
-#    'INTERCEPT_REDIRECTS': False,
-#    }
+DEBUG_TOOLBAR_CONFIG = {
+    'INTERCEPT_REDIRECTS': False,
+    }
