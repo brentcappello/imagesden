@@ -4,6 +4,7 @@ from django.dispatch import receiver
 from scrapy.contrib.djangoitem import DjangoItem
 from dynamic_scraper.models import Scraper, SchedulerRuntime
 from django.template.defaultfilters import slugify
+from datetime import datetime
 
 
 class NewsWebsite(models.Model):
@@ -20,6 +21,7 @@ class Den(models.Model):
     title = models.CharField(max_length=200)
     slug = models.SlugField(unique=True)
     description = models.TextField(blank=True)
+    created = models.DateTimeField(default=datetime.now())
 
     def save(self):
         self.slug = slugify(self.title)
@@ -37,6 +39,7 @@ class Article(models.Model):
     search_term = models.CharField(max_length=200)
     checker_runtime = models.ForeignKey(SchedulerRuntime, blank=True, null=True, on_delete=models.SET_NULL)
     dens = models.ManyToManyField(Den)
+    created = models.DateTimeField(default=datetime.now())
 
     def __unicode__(self):
         return self.title

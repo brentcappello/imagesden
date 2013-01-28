@@ -131,6 +131,7 @@ INSTALLED_APPS = (
     'debug_toolbar',
     'dynamic_scraper',
     'easy_thumbnails',
+    'braces',
 
 )
 

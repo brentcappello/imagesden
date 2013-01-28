@@ -1,9 +1,61 @@
 {% extends 'base_public.html' %}
-
 {% load thumbnail %}
 {% block title %}{{ den.title }}{% endblock %}
 {% block content_title %}{{ den.title|truncatechars:50 }}{% endblock %}
 {% block content %}
+
+{#    AJAX#}
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.0/jquery.min.js"></script>
+<script>
+
+    function refresh() {
+        $.ajax({
+            url: '{% url search_it %}apilist/lakes/',
+{#            type: 'GET',#}
+{#            accepts: 'application/json',#}
+            success: function(data) {
+                $('#do-work').html('');
+                var obj = JSON.parse(data);
+                for(var key in obj){
+                    if (obj.hasOwnProperty(key)){
+                        var value=obj[key];
+                        $('#do-work').append('Value: ' + value.fields.url + '<br/>');
+
+                    }
+                }
+            }
+        });
+        setInterval("refresh()", 10000);
+    }
+
+    $(function(){
+        refresh();
+    });
+
+</script>
+
+
+
+{#    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.0/jquery.min.js"></script>#}
+{#    <script>#}
+{#        function refresh() {#}
+{#            $.ajax({#}
+{#                url: '{{ request.slug }}',#}
+{#                success: function(data) {#}
+{#                    $('#do-work').html(data);#}
+{#                }#}
+{#            });#}
+{#            setInterval("refresh()", 10000);#}
+{#        }#}
+{##}
+{#        $(function(){#}
+{#            refresh();#}
+{#        });#}
+{##}
+{#    </script>#}
+
+
+    <div id="do-work">
     {% for item in image_list %}
         <div class="preview_tile_pub">
             <a href=""><img src="{% thumbnail item.thumbnail 260x260 crop %}" alt=""/></a>
