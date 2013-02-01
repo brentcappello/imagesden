@@ -12,6 +12,7 @@ from django.views.generic.list import MultipleObjectMixin
 #third party app imports
 from dynamic_scraper.utils.task_utils import TaskUtils
 from braces.views import JSONResponseMixin
+from easy_thumbnails.files import get_thumbnailer
 
 #imports from local apps
 from open_image.models import NewsWebsite, Article, Den
@@ -47,21 +48,15 @@ def search_it(request, template_name='core/home.html'):
 #    # Return serialized data or whatever you're doing with it
 #    return HttpResponse(simplejson.dumps(images),mimetype='application/json')
 
-def image_grid_list(request):
-    image_dict = {}
-    for image in Article.objects.all():
-        get_objects = TemperatureData.objects.filter(Device=filter_device)
-        current_object = get_objects.latest('Date')
-        current_data = current_object.Data
-        temperature_dict[image] = current_data
-    return render_to_response('core/image_grid_list.html', {'image': image_dict})
-
 
 def image_grid(request, slug):
     images = get_object_or_404(Den, slug=slug)
 #    object_list = images.article_set.all()
     search_term = slug.replace('-', ' ');
     image_list = Article.objects.filter(search_term=search_term)
+#    for item in image_list:
+#        thumb_url = get_thumbnailer(item.thumbnail)['avatar'].url
+#        thumb_url.save()
 
     #this may not be the optimal way. I would prefer to load the images by using a M2M relationship
     #object_list is the m2m relationship which I am currently not using.
@@ -70,6 +65,7 @@ def image_grid(request, slug):
 #        'object_list': object_list,
         'den': images,
         'image_list': image_list,
+#        'thumb': thumb_url,
         })
 
 class ImageObjectApiView(JSONResponseMixin, SingleObjectMixin, View):
@@ -79,9 +75,17 @@ class ImageObjectApiView(JSONResponseMixin, SingleObjectMixin, View):
         instance = [self.get_object()]
         return self.render_json_object_response(instance)
 
+
 class ImageObjectApiListView(JSONResponseMixin, MultipleObjectMixin, View):
     model = Article
+    image = {}
 
-    def get(self, request, search_term, *args, **kwargs):
+    def get(self, request, slug, *args, **kwargs):
+        search_term = slug.replace('-', ' ');
         term = Article.objects.filter(search_term=search_term)
+        for item in term:
+            image = item.thumbnail
+            thumbnailer = get_thumbnailer(image)
+            thumbnail_options = {'crop': True, 'size': (260,260)}
+            thumbnailer.get_thumbnail(thumbnail_options)
         return self.render_json_object_response(term)

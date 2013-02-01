@@ -131,9 +131,16 @@ INSTALLED_APPS = (
     'debug_toolbar',
     'dynamic_scraper',
     'easy_thumbnails',
+#    'sorl.thumbnail',
     'braces',
 
 )
+
+THUMBNAIL_ALIASES = {
+    '': {
+        'avatar': {'size': (50, 50), 'crop': True},
+        },
+    }
 
 INTERNAL_IPS = ('127.0.0.1',)
 

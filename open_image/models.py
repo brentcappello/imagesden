@@ -7,6 +7,7 @@ from django.template.defaultfilters import slugify
 from datetime import datetime
 
 
+
 class NewsWebsite(models.Model):
     name = models.CharField(max_length=200)
     url = models.URLField()
@@ -43,7 +44,6 @@ class Article(models.Model):
 
     def __unicode__(self):
         return self.title
-
 
 class ArticleItem(DjangoItem):
     django_model = Article
