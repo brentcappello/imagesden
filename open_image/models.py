@@ -7,7 +7,6 @@ from django.template.defaultfilters import slugify
 from datetime import datetime
 
 
-
 class NewsWebsite(models.Model):
     name = models.CharField(max_length=200)
     url = models.URLField()
@@ -41,6 +40,11 @@ class Article(models.Model):
     checker_runtime = models.ForeignKey(SchedulerRuntime, blank=True, null=True, on_delete=models.SET_NULL)
     dens = models.ManyToManyField(Den)
     created = models.DateTimeField(default=datetime.now())
+#    slug = models.SlugField(unique=True)
+#
+#    def save(self):
+#        self.slug = slugify(self.thumbnail)
+#        super(Article, self).save()
 
     def __unicode__(self):
         return self.title

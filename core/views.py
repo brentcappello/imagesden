@@ -3,10 +3,11 @@
 #core django imports
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect, HttpResponse
-from django.views.generic import CreateView, ListView, View
+from django.views.generic import CreateView, ListView, View, DetailView
 from django.template.defaultfilters import slugify
 from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.list import MultipleObjectMixin
+from django.core.exceptions import ObjectDoesNotExist
 #from django.utils import simplejson
 
 #third party app imports
@@ -27,13 +28,16 @@ def search_it(request, template_name='core/home.html'):
     if form.is_valid(): # All validation rules pass
         form.process()
         search = form.cleaned_data['title']
-        den = form.save(commit=False)
-        den.save()
-        #Spider Tasks
-        t = TaskUtils()
-        t.run_spiders(NewsWebsite, 'scraper', 'scraper_runtime', 'article_spider', search)
-
         slug = slugify(search)
+        try:
+            e = Den.objects.get(slug=slug)
+        except ObjectDoesNotExist:
+            den = form.save(commit=False)
+            den.save()
+
+            #Spider Tasks
+            t = TaskUtils()
+            t.run_spiders(NewsWebsite, 'scraper', 'scraper_runtime', 'article_spider', search)
 
         return redirect('den/' + slug)
     return render(request, template_name, {'form': form,})
@@ -86,6 +90,7 @@ class ImageObjectApiListView(JSONResponseMixin, MultipleObjectMixin, View):
         for item in term:
             image = item.thumbnail
             thumbnailer = get_thumbnailer(image)
-            thumbnail_options = {'crop': True, 'size': (260,260)}
+            thumbnail_options = {'crop': True, 'size': (202,158)}
             thumbnailer.get_thumbnail(thumbnail_options)
         return self.render_json_object_response(term)
+

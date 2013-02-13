@@ -1,0 +1,20 @@
+{% extends 'base_public.html' %}
+{% load thumbnail %}
+{% block title %}{{ den.title }}{% endblock %}
+{% block content_title %}{{ den.title|truncatechars:50 }}{% endblock %}
+{% block content %}
+
+
+
+    <h1>{{ object.title }}</h1>
+{#    <p>{{ object.body|removetags:"script, link, style"|safe }}</p>#}
+    <br/>
+
+    <br/>
+
+    <a href="{{ object.thumbnail }}"><img src="{{ MEDIA_URL }}{{ object.thumbnail }}" alt=""/></a><br/>
+{##}
+{#    <a href="{% url post_update object.slug%}">Edit this article</a>#}
+
+
+{% endblock %}

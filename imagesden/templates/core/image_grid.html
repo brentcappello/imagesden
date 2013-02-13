@@ -7,62 +7,71 @@
 {#    AJAX#}
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.0/jquery.min.js"></script>
 <script>
+    (function( $ )
+    {
+        window.IMGS  = {};
+        IMGS.lastID  = 0;
+        IMGS.Url     = '{% url search_it %}apilist/{{ den.slug }}/';
+        IMGS.Log     = []; // array of image IDs
+        IMGS.Refresh = function()
+        {
+            $.getJSON( IMGS.Url, function( data )
+            {
+                var obj   = {};
+                var tmp   = [];
+                var id    = 0;
+                var cls   = '';
+                var html  = '';
 
-    function refresh() {
-        $.ajax({
-            url: '{% url search_it %}apilist/{{ den.slug }}/',
-            success: function(data) {
-                $('#do-work').html('');
-                var obj = JSON.parse(data);
-                for(var key in obj){
-                    if (obj.hasOwnProperty(key)){
-                        var value=obj[key];
-                        var thumb = {{ MEDIA_URL }} + value.fields.thumbnail + '.260x260_q85_crop.jpg'
+                // new images will have a css class called "newimg"..
+                $.each( data, function()
+                {
 
-{#                        $('#do-work').append('Value: ' + value.fields.thumbnail + '<br/>');#}
-{#                        $('#do-work').append('<img src="' + {{ MEDIA_URL }} + value.fields.thumbnail +'" alt=""/>' + '<br/>');#}
-                        $('#do-work').append('<img src="' + thumb +'" alt=""/>' + '<br/>');
+                    obj   = $( this ).get( 0 );
+                    id    = parseInt( obj.pk );
+                    cls   = ( $.inArray( id, IMGS.Log ) > -1 ) ? '' : ' newimg';
+                    html += '<div class="imgr'+ cls +'"><a href="{% url search_it %}detail/'+ obj.pk +'"><img src="{{ MEDIA_URL }}' + obj.fields.thumbnail + '.202x158_q85_crop.jpg" alt="" /></a></div>';
+                    tmp.push( id );
+                });
 
-                    }
+                // show new images only if last ID has changed
+
+                if( IMGS.lastID != id )
+                {
+                    IMGS.lastID = id;
+                    IMGS.Log = tmp;
+                    // add all images to wrapper
+                    $( '#do-work' ).html( html );
+                    // fade in only new ones
+                    $( '#do-work .newimg' ).stop().animate( { opacity:1 } );
                 }
-            }
-        });
-{#        setInterval("refresh()", 10000);#}
-    }
 
-    $(function(){
-        refresh();
-        var int = setInterval("refresh()", 3000);
+                // check again in 3 seconds
+                setTimeout( IMGS.Refresh, 3000 );
+            });
+        };
+    })( jQuery );
+
+    $(function()
+    {
+        // start the loop
+        IMGS.Refresh();
     });
 
 </script>
 
 
+
+
+<div style='min-height: 2000px'>
+
     <div id="do-work">
+        <p>This is the first time anyone has searched for {{ den.title }} on ImagesDen... <br>
+        Please wait just a moment as we scour the INTERWEBZ.</p>
+   <img style="margin-top:100px; margin-left:295px" src="{{ STATIC_URL }}images/ajax-loader.gif" /></div>
+{#   Make animated gif of searching logos maybe?#}
 
-{#    {% for item in image_list %}#}
-{#        <div class="preview_tile_pub">#}
-{#            <a href=""><img src="{% thumbnail item.thumbnail 260x260 crop %}" alt=""/></a>#}
-{#            <div class="preview_title_pub"><h2>{{ item.title|truncatechars:38 }}</h2></div>#}
-{#            <div class="preview_excerp_pub">#}
-{#                    <p>{{ item.description|truncatechars:150 }}</p>#}
-{#                <span class="preview_read_pub"><a href="{{ item.get_absolute_url_public }}">READ</a></span>#}
-{#            </div>#}
-{#        </div>#}
-{#    {% endfor %}#}
-    <br>
 
-{#    <div id="do-works">#}
-{#            {% for item in image_list %}#}
-{#                <div class="preview_tile_pub">#}
-{#                    <a href=""><img src="{{ item.thumbnail|thumbnail_url:'avatar' }}" alt=""/></a>#}
-{#                    <div class="preview_title_pub"><h2>{{ item.title|truncatechars:38 }}</h2></div>#}
-{#                    <div class="preview_excerp_pub">#}
-{#                            <p>{{ item.description|truncatechars:150 }}</p>#}
-{#                        <span class="preview_read_pub"><a href="{{ item.get_absolute_url_public }}">READ</a></span>#}
-{#                    </div>#}
-{#                </div>#}
-{#            {% endfor %}#}
-{#        <br>#}
+</div>
 
 {% endblock %}

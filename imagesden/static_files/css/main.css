@@ -94,7 +94,8 @@ textarea {
 /* ==========================================================================
    Author's custom styles
    ========================================================================== */
-
+.imgr {margin: 10px; float: left}
+#do-work .newimg { opacity:0;  /*IE opacity styles here*/  }
 #container-top {
     background-color: #404240;
     font-family: Arial;
