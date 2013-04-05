@@ -16,10 +16,8 @@ from braces.views import JSONResponseMixin
 from easy_thumbnails.files import get_thumbnailer
 
 #imports from local apps
-from open_image.models import NewsWebsite, Article, Den
-from core.forms import SearchForm
-
-
+from open_image.models import NewsWebsite, Article, Den, UserDen
+from core.forms import SearchForm, UserDenForm
 
 
 def search_it(request, template_name='core/home.html'):
@@ -93,4 +91,62 @@ class ImageObjectApiListView(JSONResponseMixin, MultipleObjectMixin, View):
             thumbnail_options = {'crop': True, 'size': (202,158)}
             thumbnailer.get_thumbnail(thumbnail_options)
         return self.render_json_object_response(term)
+
+class UserDenCreateView(CreateView):
+    form_class = UserDenForm
+    template_name = 'userden_form.html'
+
+    def form_valid(self, form):
+        obj = form.save(commit=False)
+        obj.created_by = self.request.user
+        obj.save()
+
+        return HttpResponseRedirect('/')
+
+#this is a list of all the users custom dens
+class MyDenListView(ListView):
+    template_name = 'core/mydens_list.html'
+
+    def get_queryset(self):
+        self.mydens = UserDen.objects.filter(created_by=self.request.user)
+        return self.mydens
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(MyDenListView, self).get_context_data(*args, **kwargs)
+        context['mydens'] = self.mydens
+        return context
+
+class UserDenListView(ListView):
+    template_name = 'core/userimage_grid.html'
+
+    def get_queryset(self):
+        self.created_byarticle = UserDen.objects.filter(created_by=self.request.user)
+        return self.created_byarticle
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(UserDenListView, self).get_context_data(*args, **kwargs)
+        context['image_list'] = self.created_byarticle
+        return context
+
+
+
+#def userimage_grid(request, slug):
+#    images = get_object_or_404(UserDen, slug=slug)
+#    #    object_list = images.article_set.all()
+#    search_term = slug.replace('-', ' ');
+#    image_list = Article.objects.filter(search_term=search_term)
+#    #    for item in image_list:
+#    #        thumb_url = get_thumbnailer(item.thumbnail)['avatar'].url
+#    #        thumb_url.save()
+#
+#    #this may not be the optimal way. I would prefer to load the images by using a M2M relationship
+#    #object_list is the m2m relationship which I am currently not using.
+#
+#    return render(request, 'core/userimage_grid.html', {
+#        #        'object_list': object_list,
+#        'den': images,
+#        'image_list': image_list,
+#        #        'thumb': thumb_url,
+#    })
+
 

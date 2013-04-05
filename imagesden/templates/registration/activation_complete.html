@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="row">
+        <div class="column grid_12">
+            <h1>ImagesDen account activated</h1>
+            {% url auth_login as login_url %}
+            <p>Thanks for signing up! Please, <a href="{{ login_url }}">log in</a> in order to access your account</p>
+        </div>
+    </div>
+{% endblock %}

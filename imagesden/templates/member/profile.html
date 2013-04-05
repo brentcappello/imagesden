@@ -1,0 +1,46 @@
+{% extends "base_member.html" %}
+{% block title %}Your Account Settings{% endblock %}
+
+{% block content %}
+{#{% load custom_filters %}#}
+
+    <div class="settings_personal">
+        <ul>
+            <li class="first"><label>Name:</label> {{ user.get_full_name }}</li>
+            <li><label>Username:</label> {{ user.username }}</li>
+        </ul>
+        <ul>
+            <li><label>Email:</label> {{ user.email }}</li>
+            <li><label>Phone:</label> {{ profile.phone }}</li>
+        </ul>
+        <ul>
+            <li><label>Website:</label> {{ profile.website }}</li>
+        </ul>
+{#        <a class="button_link" href="{% url edit-profile %}">Edit Personal Information</a>#}
+    </div>
+
+    <h2 class="settings_header">Account Details</h2>
+    <div class="settings_personal settings_detail">
+        <ul>
+{#            <li class="first"><label>Account Type:</label> {% if user|in_group:"2" %} Paid Member {% endif %} {% if user|in_group:"1" %}#}
+{#                Free Member <a class="button_link" href="#">Click Here to Upgrade</a>  {% endif %}</li>#}
+{#            <li><label>Account Usage:</label> You currently have <strong>{{ newsletter_count }}</strong>  Newsletters#}
+{#            </li>#}
+            <li><label>Date Joined:</label> {{ user.date_joined }}</li>
+        </ul>
+    </div>
+
+    <h2 class="settings_header">Email Senders</h2>
+    <div class="settings_personal settings_sender">
+        <ul>
+            <li class="first">Infusionsoft <a class="button_link" href="#">Activate</a></li>
+            <li>MailChimp <a class="button_link" href="#">Deactivate</a></li>
+        </ul>
+    </div>
+    <h2 class="settings_header">Password Settings</h2>
+    <div class="settings_personal settings_pass">
+        <ul>
+            <li class="first"><label>Change Your Password:</label> <a class="button_link" href="{% url change-password%}">Change Password</a></li>
+        </ul>
+    </div>
+{% endblock %}

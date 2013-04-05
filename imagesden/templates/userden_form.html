@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Create a New Den {% endblock %}
+{#{% block js_top %}<script src="{{ STATIC_URL }}js/urlslugger.js"></script>{% endblock %}#}
+
+{% block content %}
+    <div class="">
+        <form  method="post">{% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Submit" />
+        </form>
+{#        <form id="den_form" method="post">#}
+{#            {% csrf_token %}#}
+{#            <ul>#}
+{#                <li><label class="newsletter_lb">Title:</label> {{ form.title }}</li>#}
+{#                <li><label class="newsletter_lb">Slug:</label> {{ form.slug }}</li>#}
+{#                <li><label>Description:</label> {{ form.description }}</li>#}
+{#                <li><label>Status:</label> {{ form.status }}</li>#}
+{#            </ul>#}
+{#            <button class="btn" type="submit">Create Den</button>#}
+{#        </form>#}
+    </div>
+{% endblock %}

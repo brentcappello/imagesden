@@ -96,6 +96,17 @@ textarea {
    ========================================================================== */
 .imgr {margin: 10px; float: left}
 #do-work .newimg { opacity:0;  /*IE opacity styles here*/  }
+#do-work .search_bg{
+    background: url('../images/search_bg.png')
+    4px 6px no-repeat;
+    height: 1000px;
+}
+#do-work .search_bg p{
+    font-size: 21px;
+    font-family: Arial;
+    padding-top: 60px;
+    padding-left: 90px;
+}
 #container-top {
     background-color: #404240;
     font-family: Arial;

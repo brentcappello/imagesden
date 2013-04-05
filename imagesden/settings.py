@@ -125,6 +125,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     'django.contrib.admin',
     'open_image',
     'south',
@@ -133,8 +134,18 @@ INSTALLED_APPS = (
     'easy_thumbnails',
 #    'sorl.thumbnail',
     'braces',
+    'registration',
+    'member',
 
 )
+
+ACCOUNT_ACTIVATION_DAYS = 7
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = 1025
+DEFAULT_FROM_EMAIL = 'webmaster@localhost'
+LOGIN_REDIRECT_URL = '/dashboard'
+
+AUTH_PROFILE_MODULE = 'member.MemberProfile'
 
 THUMBNAIL_ALIASES = {
     '': {

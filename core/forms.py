@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from open_image.models import Den
+from open_image.models import Den, UserDen
 
 class SearchForm(ModelForm):
     class Meta:
@@ -10,7 +10,14 @@ class SearchForm(ModelForm):
          search = self.cleaned_data['title']
          return search
 
-from django import forms
+class UserDenForm(ModelForm):
+    class Meta:
+        model = UserDen
+        fields = ('title','slug','description',)
+
+
+
+#from django import forms
 
 #class SearchForm(forms.Form):
 #    search = forms.CharField()

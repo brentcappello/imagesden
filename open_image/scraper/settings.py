@@ -20,6 +20,7 @@ setup_environ(imagesden.settings)
 BOT_NAME = 'newsfinder'
 BOT_VERSION = '1.0'
 
+CONCURRENT_REQUESTS = 200
 SPIDER_MODULES = ['dynamic_scraper.spiders', 'open_image.scraper',]
 USER_AGENT = '%s/%s' % (BOT_NAME, BOT_VERSION)
 

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/registration.css" />
+{% endblock %}
+
+{% block content %}
+    <div class="row" id="registration">
+        <div class="column grid_12">
+            <h1>ImagesDen registration</h1>
+            <p>Please fill the form below to register yourself for ImagesDen</p>
+            <form method="post" action="">
+                {% csrf_token %}
+                {% if form.errors %}<p>Please correct the following fields</p>{% endif %}
+                <div class align="register_div">
+                    {% if form.username.errors %}<p class="error">{{ form.username.errors }}</p>{% endif %}
+                    <p><label for="username"{% if form.username.errors %} class="error" {% endif %}>Username:</label></p>
+                    <p>{{ form.username }}</p>
+                </div>
+
+                <div class="register_div">
+                    {% if form.email.errors %}<p class="error">{{ form.email.errors }}</p>{% endif %}
+                    <p><label for="email"{% if form.email.errors %} class="error" {% endif %}>Email:</label></p>
+                    <p>{{ form.email }}</p>
+                </div>
+
+                <div class="register_div">
+                    {% if form.password1.errors %}<p class="error">{{ form.password1.errors }}</p>{% endif %}
+                    <p><label for="password1"{% if form.password1.errors %} class="error" {% endif %}>Password:</label></p>
+                    <p>{{ form.password1 }}</p>
+                </div>
+
+                <div class="register_div">
+                    {% if form.password2.errors %}<p class="error">{{ form.password2.errors }}</p>{% endif %}
+                    <p><label for="password2"{% if form.password2.errors %} class="error" {% endif %}>Repeat Password:</label></p>
+                    <p>{{ form.password2 }}</p>
+                </div>
+
+                <button type="submit" class="btn">Register</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
